@@ -43,8 +43,8 @@ sub _MODIFY_CODE_ATTRIBUTES {
     for my $attr (@attrs) {
         next unless $attr =~ _attr_re();
         my $types = $1;
-        my $evaled = eval("package $pkg; [$types]"); ## no critic
-        $types = $evaled unless $@;
+        $types = eval("package $pkg; [$types]"); ## no critic
+        die $@ if $@;
 
         push @DECLARATIONS => {
             pkg   => $pkg,
@@ -52,7 +52,7 @@ sub _MODIFY_CODE_ATTRIBUTES {
             types => $types,
         }
     }
-    $ATTR{$sub} = [ grep { !_attr_re() } @attrs ];
+    $ATTR{$sub} = [ grep { $_ !~ _attr_re() } @attrs ];
     return;
 }
 
