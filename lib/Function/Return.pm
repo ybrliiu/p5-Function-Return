@@ -43,7 +43,7 @@ sub _MODIFY_CODE_ATTRIBUTES {
     for my $attr (@attrs) {
         next unless $attr =~ _attr_re();
         my $types = $1;
-        my $evaled = eval("package $pkg; [$types]");
+        my $evaled = eval("package $pkg; [$types]"); ## no critic
         $types = $evaled unless $@;
 
         push @DECLARATIONS => {
